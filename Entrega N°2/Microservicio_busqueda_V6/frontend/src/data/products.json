@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "name": "Camisa roja",
+    "price": 250,
+    "category": "Ropa",
+    "location": "Santiago",
+    "condition": "Nuevo",
+    "image": "./src/assets/rojo.png"
+  },
+  {
+    "id": 2,
+    "name": "Chaqueta verde",
+    "price": 380,
+    "category": "Ropa",
+    "location": "Valparaíso",
+    "condition": "Usado",
+    "image": "./src/assets/chaquetaverde.png"
+  },
+  {
+    "id": 3,
+    "name": "Zapatillas deportivas",
+    "price": 500,
+    "category": "Calzado",
+    "location": "Santiago",
+    "condition": "Nuevo",
+    "image": "./src/assets/zapas.png"
+  }
+]
+
