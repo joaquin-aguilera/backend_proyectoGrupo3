@@ -1,0 +1,112 @@
+{
+  "productos": [
+    {
+      "id": 1,
+      "nombre": "Zapatillas Running",
+      "precio": 89.99,
+      "categoria": "Calzado",
+      "ubicacion": "Valparaiso",
+      "condicion": "nuevo",
+      "descripcion": "Zapatillas deportivas para running"
+    },
+    {
+      "id": 2,
+      "nombre": "Laptop HP",
+      "precio": 299.99,
+      "categoria": "Tecnologia",
+      "ubicacion": "Viña",
+      "condicion": "usado",
+      "descripcion": "Laptop HP Core i5"
+    },
+    {
+      "id": 3,
+      "nombre": "Polera Deportiva",
+      "precio": 149.99,
+      "categoria": "Ropa",
+      "ubicacion": "Quilpue",
+      "condicion": "nuevo",
+      "descripcion": "Polera deportiva transpirable"
+    },
+    {
+      "id": 4,
+      "nombre": "Zapatos Formales",
+      "precio": 79.99,
+      "categoria": "Calzado",
+      "ubicacion": "Viña",
+      "condicion": "dañado",
+      "descripcion": "Zapatos de cuero formales"
+    },
+    {
+      "id": 5,
+      "nombre": "Smartphone Samsung",
+      "precio": 249.99,
+      "categoria": "Tecnologia",
+      "ubicacion": "Valparaiso",
+      "condicion": "usado",
+      "descripcion": "Samsung Galaxy A52"
+    },
+    {
+      "id": 6,
+      "nombre": "Jeans",
+      "precio": 159.99,
+      "categoria": "Ropa",
+      "ubicacion": "Quilpue",
+      "condicion": "nuevo",
+      "descripcion": "Jeans clásicos azules"
+    },
+    {
+      "id": 7,
+      "nombre": "Zapatillas Deportivas Nike",
+      "precio": 195.99,
+      "categoria": "Calzado",
+      "ubicacion": "Valparaiso",
+      "condicion": "nuevo",
+      "descripcion": "Zapatillas Nike para entrenamiento"
+    },
+    {
+      "id": 8,
+      "nombre": "Zapatos Casuales",
+      "precio": 85.99,
+      "categoria": "Calzado",
+      "ubicacion": "Quilpue",
+      "condicion": "usado",
+      "descripcion": "Zapatos casuales para uso diario"
+    },
+    {
+      "id": 9,
+      "nombre": "Monitor Gaming",
+      "precio": 289.99,
+      "categoria": "Tecnologia",
+      "ubicacion": "Viña",
+      "condicion": "nuevo",
+      "descripcion": "Monitor 144Hz para gaming"
+    },
+    {
+      "id": 10,
+      "nombre": "Zapatillas Basketball",
+      "precio": 175.99,
+      "categoria": "Calzado",
+      "ubicacion": "Valparaiso",
+      "condicion": "nuevo",
+      "descripcion": "Zapatillas especiales para basketball"
+    },
+    {
+      "id": 11,
+      "nombre": "Tablet Samsung",
+      "precio": 199.99,
+      "categoria": "Tecnologia",
+      "ubicacion": "Quilpue",
+      "condicion": "usado",
+      "descripcion": "Tablet Samsung Galaxy Tab S6"
+    },
+    {
+      "id": 12,
+      "nombre": "Zapatos de Trekking",
+      "precio": 145.99,
+      "categoria": "Calzado",
+      "ubicacion": "Viña",
+      "condicion": "nuevo",
+      "descripcion": "Zapatos resistentes para trekking"
+    }
+  ]
+}

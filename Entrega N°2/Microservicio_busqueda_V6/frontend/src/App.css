@@ -1,0 +1,244 @@
+.App {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.search-form {
+  margin-bottom: 30px;
+}
+
+.filters-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.search-input-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  transition: border-color 0.3s;
+}
+
+.search-input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  width: 100%;
+}
+
+.filter-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.filter-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: white;
+}
+
+/* Estilos para el botón de búsqueda */
+.search-button {
+  display: block;
+  width: 200px;
+  margin: 20px auto;
+  padding: 12px 24px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.search-button:hover {
+  background-color: #0056b3;
+}
+
+.search-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Estilos para la cuadrícula de productos */
+.productos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Fuerza 3 columnas */
+  gap: 24px;
+  margin-top: 30px;
+}
+
+@media (max-width: 1024px) {
+  .productos-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas en tablets */
+  }
+}
+
+@media (max-width: 640px) {
+  .productos-grid {
+    grid-template-columns: 1fr; /* 1 columna en móviles */
+  }
+}
+
+.producto-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  height: 100%;
+}
+
+.producto-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+.producto-card h3 {
+  color: #333;
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.precio {
+  color: #28a745;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+.descripcion {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 8px 0;
+}
+
+.detalles {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.detalles span {
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detalles span strong {
+  color: #555;
+}
+
+.categoria {
+  background-color: #f8f9fa;
+  color: #495057;
+}
+
+.ubicacion {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.condicion {
+  color: #fff;
+}
+
+.condicion.nuevo {
+  background-color: #28a745;
+}
+
+.condicion.usado {
+  background-color: #ffc107;
+}
+
+.condicion.dañado {
+  background-color: #dc3545;
+}
+
+/* Sugerencias */
+.sugerencias {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 1000;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.sugerencia-item {
+  padding: 12px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background-color 0.2s;
+}
+
+.sugerencia-item:hover {
+  background-color: #f8f9fa;
+}
+
+.sugerencia-icon {
+  font-size: 1.2em;
+}
+
+.historial {
+  color: #6c757d;
+}
+
+.coincidencia {
+  color: #007bff;
+}
+
+.error-message {
+  color: #dc3545;
+  text-align: center;
+  margin: 15px 0;
+  padding: 12px;
+  background-color: #f8d7da;
+  border-radius: 8px;
+  border: 1px solid #f5c6cb;
+}
+
+.no-results {
+  text-align: center;
+  color: #6c757d;
+  font-size: 1.2em;
+  margin: 40px 0;
+  padding: 30px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+}

@@ -1,0 +1,122 @@
+openapi: 3.0.4
+info:
+  title: API de Búsqueda y Descubrimiento
+  version: 1.0.1
+  description: >-
+    API que provee funcionalidades de búsqueda, filtrado, historial y
+    recomendaciones para el frontend.
+servers:
+  - url: 'https://api.busqueda.com/v1'
+paths:
+  /productos/buscar:
+    get:
+      summary: Busca productos con texto y filtros
+      description: >-
+        Permite buscar productos en el catálogo utilizando un término de
+        búsqueda, filtros y ordenamiento.
+      parameters:
+        - name: palabra_clave
+          in: query
+          required: true
+          description: Palabra clave o frase para la búsqueda de productos.
+          schema:
+            type: string
+        - name: categoria
+          in: query
+          required: false
+          description: Filtro por categoría de producto.
+          schema:
+            type: string
+        - name: precio_min
+          in: query
+          required: false
+          description: Precio mínimo del rango a filtrar.
+          schema:
+            type: number
+            format: float
+        - name: precio_max
+          in: query
+          required: false
+          description: Precio máximo del rango a filtrar.
+          schema:
+            type: number
+            format: float
+        - name: ordenar_por
+          in: query
+          required: false
+          description: Criterio para ordenar los resultados.
+          schema:
+            type: string
+            enum:
+              - relevancia
+              - precio_asc
+              - precio_desc
+            default: relevancia
+      responses:
+        '200':
+          description: Resultados de búsqueda exitosos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Producto'
+        '400':
+          description: Parámetros de entrada inválidos.
+  /productos/recomendaciones:
+    get:
+      summary: Obtiene recomendaciones de productos
+      description: >-
+        Devuelve una lista de productos recomendados, personalizadas si el
+        usuario está autenticado.
+      responses:
+        '200':
+          description: Lista de productos recomendados.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Producto'
+  /usuario/historial-busqueda:
+    get:
+      summary: Obtiene el historial de búsqueda del usuario
+      description: >-
+        Devuelve una lista de las búsquedas recientes realizadas por el usuario
+        autenticado.
+      responses:
+        '200':
+          description: Lista de términos de búsqueda recientes.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  historial:
+                    type: array
+                    items:
+                      type: string
+components:
+  schemas:
+    Producto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID único del producto.
+        nombre:
+          type: string
+          description: Nombre del producto.
+        precio:
+          type: number
+          format: float
+          description: Precio actual del producto.
+        imagen_url:
+          type: string
+          description: URL de la imagen principal del producto.
+        vendedor:
+          type: string
+          description: Nombre del vendedor del producto.
+        stock:
+          type: integer
+          description: Cantidad disponible del producto en inventario.

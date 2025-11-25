@@ -1,0 +1,231 @@
+version: '3.8'
+
+# ============================================
+# DOCKER COMPOSE CON INTEGRACIÓN DE AUTENTICACIÓN
+# ============================================
+# Este archivo docker-compose integra:
+# 1. Servicio de Autenticación (puerto 3000)
+# 2. Microservicio de Búsqueda (puerto 5610)
+# 3. Frontend React (puerto 5620)
+# 4. Bases de datos MongoDB (ambos servicios)
+
+services:
+  # ===========================================
+  # SERVICIO DE AUTENTICACIÓN (GRUPO AUTH)
+  # ===========================================
+  auth_service:
+    build:
+      context: ../proyecto-back-tite  # Ajustar ruta según ubicación del repo
+      dockerfile: Dockerfile
+    container_name: auth_service
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - MONGODB_URI=mongodb://Admin:Admin1234Admin@db_mongodb_auth:27017/gpi_database
+      - JWT_SECRET=EstoEsUnSecretoSuperSeguroParaElCursoGPI
+      - JWT_EXPIRES_IN=1d
+    ports:
+      - "3000:3000"
+    networks:
+      - appnet
+    depends_on:
+      - db_mongodb_auth
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ===========================================
+  # MONGODB PARA AUTENTICACIÓN
+  # ===========================================
+  db_mongodb_auth:
+    image: mongo:7.0
+    container_name: db_mongodb_auth
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: Admin
+      MONGO_INITDB_ROOT_PASSWORD: Admin1234Admin
+      MONGO_INITDB_DATABASE: gpi_database
+    volumes:
+      - mongodb_auth_data:/data/db
+      # Descomentar si necesitas cargar datos iniciales
+      # - ../proyecto-back-tite/backups/gpi_dump:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "27018:27017"  # Puerto externo diferente para no conflictuar
+    networks:
+      - appnet
+
+  # ===========================================
+  # FRONTEND BÚSQUEDA (REACT)
+  # ===========================================
+  frontend_busqueda:
+    build: ./frontend
+    container_name: frontend_busqueda
+    restart: unless-stopped
+    environment:
+      - VITE_API_URL=http://localhost:5610/api
+      - VITE_AUTH_API_URL=http://localhost:3000/api
+    ports:
+      - "5620:80"
+    networks:
+      - appnet
+    depends_on:
+      - backend_busqueda
+      - auth_service
+
+  # ===========================================
+  # BACKEND BÚSQUEDA (EXPRESS)
+  # ===========================================
+  backend_busqueda:
+    build: ./backend
+    container_name: backend_busqueda
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=5610
+      - MONGODB_URI=mongodb://search_user:search_pass@db_mongodb:27017/searchdb?authSource=searchdb
+      - MONGO_ROOT_USER=root
+      - MONGO_ROOT_PASSWORD=rootpass
+      - FRONTEND_ORIGIN=http://localhost:5620
+      - PRODUCTS_API_URL=http://localhost:4040/api
+      # Integración con servicio de autenticación
+      - AUTH_SERVICE_URL=http://auth_service:3000/api
+      - AUTH_SERVICE_TIMEOUT=5000
+      - JWT_SECRET=clave_temporal_cambiar_produccion
+      - JWT_EXPIRATION=7d
+    ports:
+      - "5610:5610"
+    networks:
+      - appnet
+    depends_on:
+      - db_mongodb
+      - auth_service
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5610/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ===========================================
+  # MONGODB PARA BÚSQUEDA
+  # ===========================================
+  db_mongodb:
+    image: mongo:7.0
+    container_name: db_mongodb_busqueda
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpass
+      MONGO_INITDB_DATABASE: searchdb
+    volumes:
+      - mongodb_data:/data/db
+      - ./backend/src/BD/init:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "5173:27017"
+    networks:
+      - appnet
+
+  # ===========================================
+  # MONGO EXPRESS - BÚSQUEDA (OPCIONAL)
+  # ===========================================
+  mongo_express_busqueda:
+    image: mongo-express:latest
+    container_name: mongo_express_busqueda
+    restart: unless-stopped
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: rootpass
+      ME_CONFIG_MONGODB_SERVER: db_mongodb
+      ME_CONFIG_BASICAUTH: "false"
+    ports:
+      - "8081:8081"
+    networks:
+      - appnet
+    depends_on:
+      - db_mongodb
+
+  # ===========================================
+  # MONGO EXPRESS - AUTENTICACIÓN (OPCIONAL)
+  # ===========================================
+  mongo_express_auth:
+    image: mongo-express:latest
+    container_name: mongo_express_auth
+    restart: unless-stopped
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: Admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: Admin1234Admin
+      ME_CONFIG_MONGODB_SERVER: db_mongodb_auth
+      ME_CONFIG_BASICAUTH: "false"
+    ports:
+      - "8082:8081"
+    networks:
+      - appnet
+    depends_on:
+      - db_mongodb_auth
+
+  # ===========================================
+  # NGINX REVERSE PROXY (OPCIONAL)
+  # ===========================================
+  # Descomentar si quieres usar nginx como proxy inverso
+  # nginx:
+  #   image: nginx:alpine
+  #   container_name: nginx_proxy
+  #   restart: unless-stopped
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+  #   depends_on:
+  #     - frontend_busqueda
+  #     - backend_busqueda
+  #     - auth_service
+  #   networks:
+  #     - appnet
+
+# ===========================================
+# REDES
+# ===========================================
+networks:
+  appnet:
+    driver: bridge
+    name: pulgashop_network
+
+# ===========================================
+# VOLÚMENES
+# ===========================================
+volumes:
+  mongodb_auth_data:
+    name: mongodb_auth_data
+  mongodb_data:
+    name: mongodb_busqueda_data
+
+# ===========================================
+# NOTAS DE USO
+# ===========================================
+# 
+# Iniciar todos los servicios:
+#   docker-compose -f docker-compose.auth-integrated.yml up -d
+#
+# Ver logs de un servicio específico:
+#   docker-compose -f docker-compose.auth-integrated.yml logs -f auth_service
+#   docker-compose -f docker-compose.auth-integrated.yml logs -f backend_busqueda
+#
+# Reiniciar un servicio:
+#   docker-compose -f docker-compose.auth-integrated.yml restart auth_service
+#
+# Detener todos los servicios:
+#   docker-compose -f docker-compose.auth-integrated.yml down
+#
+# Detener y eliminar volúmenes:
+#   docker-compose -f docker-compose.auth-integrated.yml down -v
+#
+# URLs de acceso:
+#   - Frontend:              http://localhost:5620
+#   - Backend Búsqueda:      http://localhost:5610
+#   - Auth Service:          http://localhost:3000
+#   - Swagger Búsqueda:      http://localhost:5610/api-docs
+#   - Swagger Auth:          http://localhost:3000/api-docs
+#   - Mongo Express Búsq:    http://localhost:8081
+#   - Mongo Express Auth:    http://localhost:8082

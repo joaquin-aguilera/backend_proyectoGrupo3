@@ -1,0 +1,5 @@
+# Ignorar todas las imágenes cacheadas
+*
+
+# Mantener el directorio
+!.gitignore

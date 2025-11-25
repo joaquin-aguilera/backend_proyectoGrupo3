@@ -1,0 +1,31 @@
+Issues de servicios requeridos:
+
+1.-Issue para la Squad de Publicaciones y Multimedia:
+	-Título: [REQ] [API] GET /publicaciones/{ids} - Obtener detalles de productos
+
+	-Descripción: Como el microservicio de búsqueda, necesito un endpoint que me permita obtener los detalles de uno o más productos a partir de sus IDs, para poder consolidar los datos y mostrar los resultados completos al usuario. Necesito el título, la descripción, la URL de la imagen y la categoría.
+
+	-Criterios de Aceptación:
+
+		+CA1: El endpoint debe aceptar una lista de IDs de productos en la URL o en el cuerpo de la petición.
+
+		+CA2: La respuesta debe ser una lista de objetos, cada uno conteniendo el id, titulo, descripcion, imagen y categoria del producto.
+
+		+CA3: Si un ID no existe, debe ser omitido de la respuesta sin generar un error.
+
+	-Prioridad: Alta (Crítico para la funcionalidad principal).
+
+2.-Issue para la Squad de Vendedores e Inventario:
+	-Título: [REQ] [API] GET /inventario/stock-precio/{ids} - Obtener stock y precio
+
+	-Descripción: Como el microservicio de búsqueda, necesito un endpoint para obtener el precio y el stock de una lista de productos, para poder mostrar esta información actualizada junto a los resultados de la búsqueda.
+
+	-Criterios de Aceptación:
+
+		+CA1: El endpoint debe aceptar una lista de IDs de productos.
+
+		+CA2: La respuesta debe incluir el id del producto, su precio y el stock disponible.
+
+		+CA3: Si un producto está agotado (stock 0), debe indicarse explícitamente.
+
+	-Prioridad: Alta (Crítico para mostrar la información comercial).
